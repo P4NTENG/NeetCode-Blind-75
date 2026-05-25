@@ -1,0 +1,5 @@
+a = list()
+a.append("")
+print(a)
+a.append("")
+print(a)
