@@ -1,24 +1,29 @@
 def minWindow(s: str, t: str) -> str:
     left = 0
     goal_freq = {}
-    freq = {}
-    answer = s
+    curr_freq = {}
+    answer = ""
+    min_len = float("inf")
+    formed = 0
+
     for char in t:
         goal_freq[char] = goal_freq.get(char, 0) + 1
 
     for right in range(0, len(s)):
-        freq[s[right]] = freq.get(s[right], 0) + 1
+        curr_freq[s[right]] = curr_freq.get(s[right], 0) + 1
+        if curr_freq[s[right]] == goal_freq.get(s[right], 0):
+            formed += 1
 
-        diff = dict.fromkeys(goal_freq.keys(), 0)
+        while formed == len(goal_freq):
+            if right - left + 1 < min_len:
+                answer = s[left : right + 1]
+                min_len = len(answer)
 
-        for k in diff.keys():
-            diff[k] = goal_freq[k] - freq.get(k, 0)
+            curr_freq[s[left]] -= 1
+            if curr_freq[s[left]] < goal_freq.get(s[left], 0):
+                formed -= 1
 
-        if all(v <= 0 for v in diff.values()):
-            freq[s[left]] -= 1
             left += 1
-
-        answer = min(answer, s[left : right + 1])
 
     return answer
 
